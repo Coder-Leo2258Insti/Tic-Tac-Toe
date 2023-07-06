@@ -83,8 +83,9 @@ function restart() {
     boxes.forEach( box => {
         box.innerText = ''
         box.style.backgroundColor=''
+        box.addEventListener('click', boxClicked)
     })
-
+    
     playerText.innerHTML = 'Tic Tac Toe'
 
     currentPlayer = X_TEXT
