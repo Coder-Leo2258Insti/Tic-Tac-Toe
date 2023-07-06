@@ -27,10 +27,17 @@ function boxClicked(e) {
             winning_blocks.map( box => boxes[box].style.backgroundColor=winnerIndicator)
             return
         }
+        else if (isGameDrawn()) {
+            playerText.innerHTML = 'Game drawn!';
+          } else {
+            currentPlayer = currentPlayer == X_TEXT ? O_TEXT : X_TEXT;
+          }
 
-        currentPlayer = currentPlayer == X_TEXT ? O_TEXT : X_TEXT
     }
 }
+function isGameDrawn() {
+    return spaces.every((space) => space !== null);
+  }
 
 const winningCombos = [
     [0,1,2],
@@ -47,12 +54,26 @@ function playerHasWon() {
     for (const condition of winningCombos) {
         let [a, b, c] = condition
 
-        if(spaces[a] && (spaces[a] == spaces[b] && spaces[a] == spaces[c])) {
-            return [a,b,c]
+        if (
+            spaces[a] &&
+            spaces[a] == spaces[b] &&
+            spaces[a] == spaces[c]
+        ) {
+            // Add celebration effect
+            boxes[a].classList.add('celebrate')
+            boxes[b].classList.add('celebrate')
+            boxes[c].classList.add('celebrate')
+
+            // Disable further clicks on boxes
+            boxes.forEach((box) => box.removeEventListener('click', boxClicked))
+
+            // Return the winning combination
+            return [a, b, c]
         }
     }
     return false
 }
+
 
 restartBtn.addEventListener('click', restart)
 
